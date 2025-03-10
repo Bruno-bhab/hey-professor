@@ -1,0 +1,16 @@
+# .husky/prepare-commit-msg
+
+# Pega o nome da branch atual
+branch_name=$(git symbolic-ref --short HEAD)
+
+# Extrai o prefixo da branch (ex: HEY-2 de "feature/HEY-2-setup-de-desenvolvimento")
+prefix=$(echo "$branch_name" | sed -E 's/^.*\/(HEY-[0-9]+)-.*/\1/')
+
+# Pega a mensagem do commit
+commit_msg_file=$1
+commit_msg=$(cat "$commit_msg_file")
+
+# Adiciona o prefixo à mensagem do commit
+if [ -n "$prefix" ]; then
+  echo "$prefix: $commit_msg" > "$commit_msg_file"
+fi
